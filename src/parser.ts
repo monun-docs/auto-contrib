@@ -5,7 +5,7 @@ export function parse(excluded: string, variables: any): string[] {
         return []
     } 
     core.debug(`Variables: ${JSON.stringify(variables)}`)
-    let addList = excluded.replace(" ", "").split("+")
+    let addList = excluded.replaceAll(" ", "").split("+")
     let toAdd: string[] = []
     addList.forEach(i => {
         if (i.startsWith("\"") && i.endsWith("\"")) {
