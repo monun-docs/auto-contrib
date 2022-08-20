@@ -13,7 +13,8 @@ type Readme = {
 type Contributor = {
     login: string,
     html_url: string,
-    response: any
+    response: any,
+    name: string
 }
 
 type Repo = {
@@ -46,9 +47,14 @@ async function getContributors(repo: Repo, octokit: InstanceType<typeof GitHub>)
         return {
             login: v.login,
             html_url: v.html_url,
-            response: v
+            response: v,
+            name: v.name
         } as Contributor
     })
+}
+
+function isBot(name: string): boolean {
+    return name.substring(name.length - 6) == "[bot]" || name == "renovate-bot"
 }
 
 async function run() {
@@ -80,13 +86,13 @@ async function run() {
             let filtered;
 
             if (includeOnly.length == 0) {
-                filtered = contributors.filter(i => !exclude.includes(i.login))
+                filtered = contributors.filter(i => !exclude.includes(i.login) && !isBot(i.login))
             } else {
-                filtered = contributors.filter(i => !exclude.includes(i.login) && includeOnly.includes(i.login))
+                filtered = contributors.filter(i => !exclude.includes(i.login) && includeOnly.includes(i.login) && !isBot(i.login))
             }
             
             filtered.forEach(contributor => {
-                tag.innerHTML += `- [${contributor.login}](${contributor.html_url})\n`
+                tag.innerHTML += `- [${contributor.name}](${contributor.html_url})\n`
             })
         })
         let newREADME = Base64.encode(jsdom.window.document.body?.innerHTML)
