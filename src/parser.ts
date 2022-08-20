@@ -15,7 +15,7 @@ export function parse(excluded: string, variables: any): string[] {
                 toAdd.push(x)
             })
         } else {
-            throw new Error("Invalid Code Syntax")
+            throw new Error(`Invalid Code Syntax: ${i}`)
         }
     })
     core.debug(`to add = ${JSON.stringify(toAdd)}`)
