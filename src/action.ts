@@ -52,7 +52,7 @@ async function getContributors(repo: Repo, octokit: InstanceType<typeof GitHub>)
 }
 
 function isBot(name: string): boolean {
-    return name.substring(name.length - 6) == "[bot]" || name == "renovate-bot"
+    return name.substring(name.length - 5) == "[bot]" || name == "renovate-bot"
 }
 
 async function run() {
