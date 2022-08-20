@@ -1,0 +1,16 @@
+name: test
+on:
+  schedule:
+  - cron: '*/5 * * * *'
+
+jobs:
+  test:
+    name: Workflow test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start workflow
+        uses: monun-docs/auto-contrib@v1.0
+        with:
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
+          repo: monun-docs/auto-contrib
+          vars: '{ "moderator": [ "dolphin2410" ] }'

@@ -1,0 +1,14 @@
+name: 'auto-contrib'
+description: 'Add contributors automatically'
+inputs:
+  gh_token:
+    description: 'TOKEN'
+    required: true
+  vars:
+    description: 'Variables'
+  repo:
+    description: 'repo'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
