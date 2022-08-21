@@ -94,7 +94,9 @@ async function run() {
             })
         })
         let newREADME = Base64.encode(jsdom.window.document.body?.innerHTML)
-        if (newREADME == readme.response.content) {
+        core.debug(`OLD: ${readme.response.content}`)
+        core.debug(`NEW: ${newREADME}`)
+        if (newREADME != readme.response.content) {
             return
         }
         await octokit.rest.repos.createOrUpdateFileContents({
