@@ -94,7 +94,7 @@ async function run() {
             })
         })
         let newREADME = Base64.encode(jsdom.window.document.body?.innerHTML)
-        if (newREADME == readme.response.content) {
+        if (readme.content == jsdom.window.document.body?.innerHTML) {
             return
         }
         await octokit.rest.repos.createOrUpdateFileContents({
