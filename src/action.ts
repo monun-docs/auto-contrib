@@ -51,6 +51,16 @@ async function getContributors(repo: Repo, octokit: InstanceType<typeof GitHub>)
     })
 }
 
+async function getContributor(name: string, octokit: InstanceType<typeof GitHub>): Promise<Contributor> {
+    let contributor = (await octokit.rest.users.getByUsername({ username: name }))
+
+    return  {
+        login: contributor.data.login,
+        html_url: contributor.data.html_url,
+        response: contributor.data
+    }
+}
+
 function isBot(name: string): boolean {
     return name.substring(name.length - 5) == "[bot]" || name == "renovate-bot"
 }
@@ -93,10 +103,12 @@ async function run() {
                 tag.innerHTML += `- [${contributor.login}](${contributor.html_url})\n`
             })
         })
-        let newREADME = Base64.encode(jsdom.window.document.body?.innerHTML)
-        if (readme.content == jsdom.window.document.body?.innerHTML) {
+
+        // prev >= new
+        if (readme.content.length >= jsdom.window.document.body?.innerHTML.length) {
             return
         }
+        let newREADME = Base64.encode(jsdom.window.document.body?.innerHTML)
         await octokit.rest.repos.createOrUpdateFileContents({
             owner: repo.owner,
             repo: repo.repo,
